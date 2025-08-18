@@ -1,6 +1,6 @@
-# 🏡 Land Price Estimation using Spatial Feature Analysis
+# Land Price Estimation using Spatial Feature Analysis
 
-## 📌 Overview
+##  Overview
 This project estimates the **land price** of a given location based on:  
 
 - **Population density** from postal data.
@@ -11,7 +11,7 @@ The system integrates multiple geospatial datasets, processes them in **GeoPanda
 
 ---
 
-## 🚀 Features Implemented
+##  Features Implemented
 
 ### 1. **User Coordinate Input**
 - Accepts latitude and longitude from the user  
@@ -23,12 +23,12 @@ The system integrates multiple geospatial datasets, processes them in **GeoPanda
 
 ### 3. **Spatial Feature Extraction** *(1 km radius)*
 Counts and measures average distances to:  
-- 🏢 Buildings  
-- 🎓 Education facilities *(points & polygons)*  
-- 🏥 Healthcare facilities *(points & polygons)*  
-- 🚆 Railways *(points & lines)*  
-- ⚓ Seaports *(points & polygons)*  
-- 🌊 Waterways *(points, lines & polygons)*  
+-  Buildings  
+-  Education facilities *(points & polygons)*  
+-  Healthcare facilities *(points & polygons)*  
+-  Railways *(points & lines)*  
+-  Seaports *(points & polygons)*  
+-  Waterways *(points, lines & polygons)*  
 
 ### 4. **Variety Score Calculation**
 - Measures diversity of available categories near the point  
@@ -43,7 +43,7 @@ Counts and measures average distances to:
 
 ---
 
-## 📂 Data Used
+##  Data Used
 - **Postal Data** *(Pincode, District, Lat/Lon, Population Density)*  
 - **HOTOSM Datasets**:  
   - Buildings  
@@ -55,7 +55,7 @@ Counts and measures average distances to:
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 - **Python 3.x**  
 - **GeoPandas** – Spatial data handling  
 - **Pandas** – Data processing  
@@ -63,7 +63,7 @@ Counts and measures average distances to:
 
 ---
 
-## ⚙️ How It Works
+##  How It Works
 1. Load all infrastructure datasets  
 2. Ask user for coordinates  
 3. Match with nearest postal record  
@@ -73,7 +73,7 @@ Counts and measures average distances to:
 
 ---
 
-## 📊 Example Output
+##  Example Output
 Available Coordinates (choose from below):
 
 Pincode District Latitude Longitude
