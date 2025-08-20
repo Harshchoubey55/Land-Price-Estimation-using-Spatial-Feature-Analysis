@@ -10,6 +10,9 @@ This project estimates the **land price** of a given location based on:
 The system integrates multiple geospatial datasets, processes them in **GeoPandas**, and calculates a final estimated **price per square foot** for user-provided coordinates.  
 
 ---
+## Dataset
+Due to GitHub's file size restrictions, the datasets are hosted on Google Drive.
+**[[Dataset Link](https://drive.google.com/drive/folders/1sc0jxvsqtN614knBgj_k88whlsOUhh-m?usp=drive_link)]**
 
 ##  Features Implemented
 
@@ -55,11 +58,18 @@ Counts and measures average distances to:
 
 ---
 
-##  Tech Stack
-- **Python 3.x**  
-- **GeoPandas** – Spatial data handling  
+##  Tech Stack and Libraries
+- **Python 3.10+**  
+- **GeoPandas** – Spatial data handling
+- **rasterio**
 - **Pandas** – Data processing  
-- **Shapely** – Geometric operations  
+- **Shapely** – Geometric operations
+- **Fiona** - file access for geospatial formats
+- **PyProj** - coordinate system (CRS - Coordinate Reference System) handling
+- **numpy**
+- **folium notebook** - (optional) Visualization of spatial data
+- **rtree** - spatial indexing for faster queries
+- **Jupyter Notebook (optiona if not using the same IDE)**
 
 ---
 
