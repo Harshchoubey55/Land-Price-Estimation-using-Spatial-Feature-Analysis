@@ -35,8 +35,8 @@ graph TD
     
     H1 & H2 & H3 & H4 --> I{Calculations Engine}
     
-    I --> |e^-distance| J[Continuous Proximity Decay]
-    I --> |sqrt(count)| K[Diminishing Saturation Limit]
+    I --> |"e^-distance"| J[Continuous Proximity Decay]
+    I --> |"sqrt(count)"| K[Diminishing Saturation Limit]
     
     J & K --> L[[🤑 Output: Final Topographical Value Estimate]]
     
