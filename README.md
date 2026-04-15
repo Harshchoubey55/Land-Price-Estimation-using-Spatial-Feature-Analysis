@@ -3,6 +3,7 @@
 <div align="center">
   <img src="https://img.shields.io/badge/Status-Active-success.svg?style=for-the-badge&logo=" alt="Status" />
   <img src="https://img.shields.io/badge/Python-3.10+-blue.svg?style=for-the-badge&logo=python" alt="Python Badge"/>
+  <img src="https://img.shields.io/badge/Backend-Flask_API-white.svg?style=for-the-badge&logo=flask" alt="Flask Badge"/>
   <img src="https://img.shields.io/badge/Neo_UI-ES6-yellow.svg?style=for-the-badge&logo=javascript" alt="JavaScript Badge"/>
   <img src="https://img.shields.io/badge/Mapping-Leaflet.js-brightgreen.svg?style=for-the-badge&logo=leaflet" alt="Leaflet Badge"/>
   <img src="https://img.shields.io/badge/Space-GeoPandas-orange.svg?style=for-the-badge" alt="GeoPandas"/>
@@ -16,17 +17,17 @@
 
 ## 🔍 System Architecture Flow
 
-The system processes spatial layers synchronously. The below flowchart outlines the predictive journey from coordinate lock to financial valuation.
+The system operates on a decoupled **Frontend-to-Backend Full-Stack Architecture**. The Javascript UI captures coordinates and natively requests intersection mathematics from the local Flask API.
 
 ```mermaid
 graph TD
-    A[🎯 User Initiates Scan] --> B(📍 Bounding Box Interceptor)
+    A[🎯 User Initiates Scan on UI] -->|HTTP GET| B(📍 Flask API: /api/evaluate)
     B --> C{Inside India Bounds?}
     C -->|False| D[🛑 Abort: Target Out of Bounds]
     C -->|True| E[📊 Load WorldPop Raster Density TIF]
     
-    E --> F((Radial Penetration Setup))
-    F --> |1km / 5km / 10km Buffer| G[GeoPandas Spatial Intersections]
+    E --> F((GeoPandas Radial Setup))
+    F --> |Dynamic Radius Buffer| G[Shapely Spatial Intersections]
     
     G --> H1[🏥 Healthcare Vectors]
     G --> H2[🎓 Education Vectors]
@@ -38,11 +39,23 @@ graph TD
     I --> |"e^-distance"| J[Continuous Proximity Decay]
     I --> |"sqrt(count)"| K[Diminishing Saturation Limit]
     
-    J & K --> L[[🤑 Output: Final Topographical Value Estimate]]
+    J & K --> O((API JSON Construct))
+    O --> |HTTP 200| L[[🤑 UI Output: Final Value Estimate]]
     
     style A fill:#09090b,stroke:#FF3366,stroke-width:2px,color:#fff
+    style B fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#fff
     style L fill:#10b981,stroke:#0f172a,stroke-width:2px,color:#fff
 ```
+
+---
+
+## 🛠️ Technology Stack
+This application relies on high-grade data-science infrastructure completely hosted locally.
+- **Web Server:** `Flask`, `Flask-CORS`
+- **Spatial Processing:** `GeoPandas`, `Shapely`, `Fiona`, `PyProj`, `Rtree`
+- **Raster Analytics:** `Rasterio`
+- **Frontend Dashboard:** Vanilla `ES6 JavaScript`, `HTML5`, `CSS3`
+- **Mapping APIs:** `Leaflet.js`, `CartoDB Positron Layers`
 
 ---
 
@@ -67,7 +80,7 @@ Because native mapping tools rely on predefined political borders that inject ge
 1. **ESRI World Imagery Layer**: Pure, high-resolution satellite topography.
 2. **CartoDB Positron Vector Overlay**: Floating topological texts (Cities, Districts) stripped of controversial national boundary lines.
 
-This provides an incredibly academic, Neo-Tactical layout driven by localized JSON logic without server lag.
+This provides an incredibly academic, Neo-Tactical layout driven by localized JSON logic.
 
 ---
 
@@ -84,24 +97,24 @@ No predictive spatial algorithm is flawless. To maintain academic and technical 
 ---
 
 ## 🚀 How To Run (Starting the Spatial Server)
-Because this project utilizes over 1GB of raw Geographical boundaries, it requires a local Python backend to process the math. This connects the pure frontend directly to the spatial raster datasets.
+Because this project utilizes over 1GB of raw Geographical boundaries mapped directly to an active REST API, it requires a local Python backend to process the math. This connects the pure frontend directly to the spatial raster datasets.
 
-1. Install backend requirements:
+1. **Activate your environment & Install Backend Libraries**:
    ```bash
    pip install -r requirements.txt
    ```
-2. Ignite the geospatial core engine:
+2. **Ignite the Flask Engine**:
    ```bash
    python app.py
    ```
-   *(Wait up to 30-60 seconds for GeoPandas to mount the spatial geometries into system RAM)*
-3. **Launch the Frontend**: Once the terminal reads `"Server Online! GeoPredict APIs active"`, double-click `frontend/index.html` in your web browser.
+   *(Wait up to 30-60 seconds for the backend to cache the massive spatial geometries into server RAM)*
+3. **Launch the Frontend**: Once the terminal reads `"Server Online! GeoPredict APIs active"`, leave the terminal running and simply double-click `frontend/index.html` in your web browser.
 
 ---
 
 ## 💾 Resource Acquisition
 
-Due to rigorous spatial density and the constraints of standard IDE remote commits, the **HOTOSM** and **WorldPop** databases required to natively execute the GeoPandas backend are retained offline via Google Cloud Drive.
+Due to rigorous spatial density and the constraints of standard IDE remote commits, the **HOTOSM** and **WorldPop** databases required to natively execute the backend algorithms are retained offline via Google Cloud Drive.
 - 👉 **[Download Full Feature Dataset Here](https://drive.google.com/file/d/1drzNV2RqIDW2B5vz1EZKh0VYV_FdVAWA/view?usp=drive_link)**
 
 ---
