@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Harsh Choubey">
     <title>GeoPredict Vanguard</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,9 @@
         
         <!-- Top left branding editable -->
         <div class="hud-branding">
-            <h1 contenteditable="true" spellcheck="false" title="Click to edit project name">YOUR PROJECT NAME</h1>
-            <p contenteditable="true" spellcheck="false" title="Click to edit mentions">BY [YOUR NAME / MENTIONS]</p>
+            <h1 contenteditable="true" spellcheck="false" title="Click to edit project name">LAND PRICE ESTIMATION</h1>
+            <p contenteditable="true" spellcheck="false" title="Click to edit mentions">USING SPATIAL FEATURE ANALYSIS</p>
+            <p class="author-subtext">BY HARSH CHOUBEY</p>
         </div>
 
         <!-- Offline Database Dropdown UI -->
@@ -109,6 +111,9 @@
 
     <!-- Crosshair hint -->
     <div id="crosshair-hint" class="crosshair-hint">CLICK ANYWHERE IN INDIA TO LOCK TARGET</div>
+
+    <!-- Subtle Watermark -->
+    <div class="watermark-clean">Proprietary Spatial Engine &copy; Harsh Choubey</div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="api.js"></script>

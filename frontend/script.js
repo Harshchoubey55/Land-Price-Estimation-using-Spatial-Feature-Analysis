@@ -3,6 +3,8 @@ let defaultMarker;
 let bufferCircle;
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("%c GEOPREDICT SPATIAL ENGINE \n %c System Architect & Lead Developer: Harsh Choubey ", "color:#FF3366; font-size:16px; font-weight:bold;", "color:white; background:#09090b; font-size:12px;");
+
     // Hide hint strictly after 4 seconds
     setTimeout(() => {
         const hint = document.getElementById('crosshair-hint');
