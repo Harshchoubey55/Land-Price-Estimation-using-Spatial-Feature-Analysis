@@ -1,4 +1,4 @@
-# 🗺️ GeoPredict Architect: Spatial Intelligence Framework
+# Land Price Estimation using Spatial Feature Analysis
 
 <div align="center">
   <img src="https://img.shields.io/badge/Status-Active-success.svg?style=for-the-badge&logo=" alt="Status" />
@@ -61,7 +61,7 @@ This application relies on high-grade data-science infrastructure completely hos
 
 ## 🧬 Algorithm & Mathematical Features
 
-Unlike static real estate modules that rely on manual databases, **GeoPredict** leverages rigorous algorithmic constraints to simulate realistic market behaviors based on surroundings.
+Unlike static real estate modules that rely on manual databases, this framework leverages rigorous algorithmic constraints to simulate realistic market behaviors based on surroundings.
 
 ### 1. The Proximity Decay Theorem `e^(-dist)`
 It abandons "range-binning" (e.g., arbitrarily deciding 900m is identical to 10m). Instead, it maps amenity relationships logarithmically. An airport 100 meters away severely scales value compared to an airport 5 kilometers away.
@@ -96,26 +96,47 @@ No predictive spatial algorithm is flawless. To maintain academic and technical 
 
 ---
 
-## 🚀 How To Run (Starting the Spatial Server)
-Because this project utilizes over 1GB of raw Geographical boundaries mapped directly to an active REST API, it requires a local Python backend to process the math. This connects the pure frontend directly to the spatial raster datasets.
+## 🚀 Setup & Installation (Server Initialization)
+Because this project utilizes over 1GB of raw Geographical polygons mapped directly to an active REST API, it requires configuring the local Python backend paths before launching the UI.
 
-1. **Activate your environment & Install Backend Libraries**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. **Ignite the Flask Engine**:
-   ```bash
-   python app.py
-   ```
-   *(Wait up to 30-60 seconds for the backend to cache the massive spatial geometries into server RAM)*
-3. **Launch the Frontend**: Once the terminal reads `"Server Online! GeoPredict APIs active"`, leave the terminal running and simply double-click `frontend/index.html` in your web browser.
-
----
-
-## 💾 Resource Acquisition
-
-Due to rigorous spatial density and the constraints of standard IDE remote commits, the **HOTOSM** and **WorldPop** databases required to natively execute the backend algorithms are retained offline via Google Cloud Drive.
+### Step 1: Download Resource Acquisition
+You must download the **HOTOSM** and **WorldPop** databases required to natively execute the backend algorithms from the Google Cloud Drive.
 - 👉 **[Download Full Feature Dataset Here](https://drive.google.com/file/d/1drzNV2RqIDW2B5vz1EZKh0VYV_FdVAWA/view?usp=drive_link)**
+- Extract the raw data folder anywhere on your local computer.
+
+### Step 2: Configure Absolute Paths
+Because computers map drives differently, you **must update `app.py`** to point to where you placed the dataset. Open `app.py` and modify these lines to align with your computer's extraction folder:
+```python
+# Around Line 14: Path to the Postal dataset
+postal_df = pd.read_excel(r"D:\Your\Path\Dataset\Pin_code_and_postal\Pin_code_and_postal.xlsx")
+
+# Around Line 22: Path to the WorldPop Raster file
+raster_path = r"D:\Your\Path\Dataset\historical_residex_data\WorldPopOrg_India_Population_2020_dataset.tif"
+
+# Around Line 45: Path to your HOTOSM boundary data folder
+HOT_BASE = r"D:\Your\Path\Dataset\HOTOSM\data_hum_data_org"
+```
+
+### Step 3: Ignite the Engine
+Open your terminal inside the repository folder and create the virtual environment:
+```bash
+python -m venv venv
+
+# Activate Environment (Windows)
+venv\Scripts\activate
+# Activate Environment (Mac / Linux)
+source venv/bin/activate
+
+# Install Data Science Libraries
+pip install -r requirements.txt
+
+# Start Server
+python app.py
+```
+*(Wait up to 30-60 seconds for the backend to cache the massive spatial geometries into server RAM)*
+
+### Step 4: Launch the Frontend
+Once the terminal reads `"Server Online! Spatial APIs active"`, leave the terminal running in the background. Open your computer's file explorer, navigate to the `frontend/` folder, and simply double-click `index.html` to open it in your web browser. 
 
 ---
 _System Engineered for Next-Generation Terrain Analytics._

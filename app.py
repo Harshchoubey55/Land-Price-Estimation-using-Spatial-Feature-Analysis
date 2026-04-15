@@ -10,7 +10,7 @@ import math
 app = Flask(__name__)
 CORS(app)
 
-print("Initializing GeoPredict Server...")
+print("Initializing Spatial Server...")
 print("Loading core datasets (This may take several minutes)...")
 
 # 1. Load Postal Data
@@ -71,7 +71,7 @@ CATEGORY_DOMAINS = {
     "Buildings": building_points
 }
 
-print("Server Online! GeoPredict APIs active.\n")
+print("Server Online! Spatial APIs active.\n")
 
 @app.route('/api/evaluate', methods=['GET'])
 def evaluate_location():
