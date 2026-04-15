@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoPredict Vanguard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- Minimalist Data Overlay -->
+    <div class="hud-overlay">
+        
+        <!-- Top left branding editable -->
+        <div class="hud-branding">
+            <h1 contenteditable="true" spellcheck="false" title="Click to edit project name">YOUR PROJECT NAME</h1>
+            <p contenteditable="true" spellcheck="false" title="Click to edit mentions">BY [YOUR NAME / MENTIONS]</p>
+        </div>
+
+        <!-- Offline Database Dropdown UI -->
+        <div class="hud-search drop-cascade">
+            <select id="state-select">
+                <option value="">SELECT STATE</option>
+            </select>
+            <select id="district-select" disabled>
+                <option value="">SELECT DISTRICT</option>
+            </select>
+            <select id="location-select" disabled>
+                <option value="">SELECT PINCODE / LOCATION</option>
+            </select>
+            <button id="search-btn" disabled>LOCATE</button>
+        </div>
+
+        <!-- Notification Center -->
+        <div id="toast-container" class="toast-container hidden">
+            <div id="toast-msg" class="toast-msg"></div>
+        </div>
+
+        <!-- Bottom massive center panel -->
+        <div class="hud-bottom-panel">
+            
+            <div class="panel-section control-layer">
+                <div class="coord-display">
+                    <span class="mono">LAT</span>
+                    <input type="number" id="lat" step="0.0001" value="" placeholder="XX.XXXX" readonly>
+                </div>
+                <div class="coord-display">
+                    <span class="mono">LON</span>
+                    <input type="number" id="lon" step="0.0001" value="" placeholder="YY.YYYY" readonly>
+                </div>
+                <div class="radius-selector">
+                    <span class="mono">RAD [m]</span>
+                    <select id="radius">
+                        <option value="1000">1000</option>
+                        <option value="5000" selected>5000</option>
+                        <option value="10000">10000</option>
+                    </select>
+                </div>
+                <button id="run-btn" class="run-btn">
+                    <span class="btn-text">INITIALIZE SCAN</span>
+                    <span class="loader hidden"></span>
+                </button>
+            </div>
+
+            <!-- Dashboard stats -->
+            <div id="results-layer" class="panel-section results-layer hidden">
+                <div class="val-header">
+                    <div class="loc-name">
+                        <h2 id="res-location">Unknown Region</h2>
+                        <span class="pincode mono">PIN: <span id="res-pincode">--</span></span>
+                    </div>
+                    <div class="price-burst">
+                        <span class="price-lbl">ESTIMATED VALUATION</span>
+                        <h1 id="res-price">--</h1>
+                    </div>
+                </div>
+
+                <div class="data-grid">
+                    <div class="data-blob">
+                        <span class="blob-lbl">DENSITY MULT</span>
+                        <div class="blob-val" id="res-density">--</div>
+                    </div>
+                    <div class="data-blob alt">
+                        <span class="blob-lbl">VARIETY INDEX</span>
+                        <div class="blob-val" id="res-variety">--</div>
+                    </div>
+                    <div class="data-blob">
+                        <span class="blob-lbl">PROXIMITY BONUS</span>
+                        <div class="blob-val green" id="res-bonus">--</div>
+                    </div>
+                    <div class="data-blob full-grid feature-list">
+                        <span class="blob-lbl">SPATIAL ANOMALY DETECTION (INFRASTRUCTURE)</span>
+                        <div id="features-container" class="feature-pills">
+                            <!-- Injected -->
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="close-results" class="close-btn">RESET TOPOLOGY</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Crosshair hint -->
+    <div id="crosshair-hint" class="crosshair-hint">CLICK ANYWHERE IN INDIA TO LOCK TARGET</div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
