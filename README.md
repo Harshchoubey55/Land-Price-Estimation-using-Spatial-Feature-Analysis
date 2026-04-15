@@ -83,6 +83,22 @@ No predictive spatial algorithm is flawless. To maintain academic and technical 
 
 ---
 
+## 🚀 How To Run (Starting the Spatial Server)
+Because this project utilizes over 1GB of raw Geographical boundaries, it requires a local Python backend to process the math. This connects the pure frontend directly to the spatial raster datasets.
+
+1. Install backend requirements:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Ignite the geospatial core engine:
+   ```bash
+   python app.py
+   ```
+   *(Wait up to 30-60 seconds for GeoPandas to mount the spatial geometries into system RAM)*
+3. **Launch the Frontend**: Once the terminal reads `"Server Online! GeoPredict APIs active"`, double-click `frontend/index.html` in your web browser.
+
+---
+
 ## 💾 Resource Acquisition
 
 Due to rigorous spatial density and the constraints of standard IDE remote commits, the **HOTOSM** and **WorldPop** databases required to natively execute the GeoPandas backend are retained offline via Google Cloud Drive.
