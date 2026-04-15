@@ -37,21 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
     titleH1.addEventListener('input', () => localStorage.setItem('geoTitle', titleH1.innerText));
     subtitleP.addEventListener('input', () => localStorage.setItem('geoSub', subtitleP.innerText));
 
-    let geoData = {};
+    let geoData = (typeof GEO_DATA !== 'undefined') ? GEO_DATA : {};
 
-    // Load Offline Data
-    fetch('locations.json')
-        .then(res => res.json())
-        .then(data => {
-            geoData = data;
-            const stateSel = document.getElementById('state-select');
-            Object.keys(geoData).sort().forEach(state => {
-                const opt = document.createElement('option');
-                opt.value = state;
-                opt.textContent = state;
-                stateSel.appendChild(opt);
-            });
-        }).catch(err => console.error("Failed to load offline dataset", err));
+    // Load Offline Data Sync
+    if (Object.keys(geoData).length > 0) {
+        const stateSel = document.getElementById('state-select');
+        Object.keys(geoData).sort().forEach(state => {
+            const opt = document.createElement('option');
+            opt.value = state;
+            opt.textContent = state;
+            stateSel.appendChild(opt);
+        });
+    } else {
+        console.error("Failed to load GEO_DATA object from locations.js");
+        showToast("OFFLINE DATABASE MISSING");
+    }
 
     // Handle Cascading Selects
     document.getElementById('state-select').addEventListener('change', (e) => {
