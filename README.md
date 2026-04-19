@@ -11,6 +11,12 @@
 
 <br/>
 
+<div align="center">
+  <b><a href="https://raw.githack.com/Harshchoubey55/Land-Price-Estimation-using-Spatial-Feature-Analysis/main/frontend/demo.html">✨ CLICK HERE TO VIEW THE INTERACTIVE UI DEMO ✨</a></b>
+</div>
+
+<br/>
+
 > **An advanced urban analytics engine designed to dynamically approximate real-estate valuation gradients strictly through topographical mathematics, infrastructural buffering, and population raster density.**
 
 ---

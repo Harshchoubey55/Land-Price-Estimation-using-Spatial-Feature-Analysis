@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Harsh Choubey">
+    <title>Land Price Spatial Engine (Static Demo)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        .demo-modal-content {
+            background: #09090b; padding: 40px; border: 2px solid #FF3366;
+            color: #FFF; font-family: 'Outfit', sans-serif; text-align: center;
+            max-width: 450px; border-radius: 12px; box-shadow: 0 0 30px rgba(255, 51, 102, 0.4);
+        }
+        .demo-modal-content h2 { color: #FF3366; margin-top: 0; font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
+        .demo-modal-content p { font-size: 15px; line-height: 1.6; color: #cbd5e1; margin-bottom: 20px;}
+        .demo-ok-btn {
+            background: #FF3366; color: white; border: none; padding: 12px 28px;
+            font-weight: bold; font-family: 'JetBrains Mono', monospace; cursor: pointer; border-radius: 6px;
+            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .demo-ok-btn:hover { background: #e0285a; box-shadow: 0 0 15px #FF3366; }
+    </style>
+</head>
+<body>
+    <div id="demo-modal" class="demo-modal">
+        <div class="demo-modal-content">
+            <h2>Interactive Demo Mode</h2>
+            <p>Welcome! This is a static demo for illustrative purposes only to give you a feel of the interface.</p>
+            <p><strong>⚠️ Backend Disconnected:</strong> The Python spatial engine and offline databases are not integrated here. All location data and valuation scans are randomly simulated.</p>
+            <button class="demo-ok-btn" onclick="document.getElementById('demo-modal').style.display='none'">Enter Dashboard</button>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <!-- Minimalist Data Overlay -->
+    <div class="hud-overlay">
+        <div class="hud-branding">
+            <h1 contenteditable="true" spellcheck="false" title="Click to edit project name">LAND PRICE ESTIMATION</h1>
+            <p contenteditable="true" spellcheck="false" title="Click to edit mentions">DEMONSTRATION MODE</p>
+            <p class="author-subtext">BY HARSH CHOUBEY</p>
+        </div>
+
+        <div class="hud-search drop-cascade">
+            <select id="state-select"><option value="">SELECT STATE</option></select>
+            <select id="district-select" disabled><option value="">SELECT DISTRICT</option></select>
+            <select id="location-select" disabled><option value="">SELECT PINCODE / LOCATION</option></select>
+            <button id="search-btn" disabled>LOCATE</button>
+        </div>
+
+        <div id="toast-container" class="toast-container hidden">
+            <div id="toast-msg" class="toast-msg"></div>
+        </div>
+
+        <div class="hud-bottom-panel">
+            <div class="panel-section control-layer">
+                <div class="coord-display">
+                    <span class="mono">LAT</span>
+                    <input type="number" id="lat" step="0.0001" value="" placeholder="XX.XXXX" readonly>
+                </div>
+                <div class="coord-display">
+                    <span class="mono">LON</span>
+                    <input type="number" id="lon" step="0.0001" value="" placeholder="YY.YYYY" readonly>
+                </div>
+                <div class="radius-selector">
+                    <span class="mono">RAD [m]</span>
+                    <select id="radius">
+                        <option value="1000">1000</option>
+                        <option value="5000" selected>5000</option>
+                        <option value="10000">10000</option>
+                    </select>
+                </div>
+                <button id="run-btn" class="run-btn">
+                    <span class="btn-text">INITIALIZE SCAN</span>
+                    <span class="loader hidden"></span>
+                </button>
+            </div>
+
+            <!-- Dashboard stats -->
+            <div id="results-layer" class="panel-section results-layer hidden">
+                <div class="val-header">
+                    <div class="loc-name">
+                        <h2 id="res-location">Unknown Region</h2>
+                        <span class="pincode mono">PIN: <span id="res-pincode">--</span></span>
+                    </div>
+                    <div class="price-burst">
+                        <span class="price-lbl">ESTIMATED VALUATION</span>
+                        <h1 id="res-price">--</h1>
+                    </div>
+                </div>
+
+                <div class="data-grid">
+                    <div class="data-blob">
+                        <span class="blob-lbl">DENSITY MULT</span>
+                        <div class="blob-val" id="res-density">--</div>
+                    </div>
+                    <div class="data-blob alt">
+                        <span class="blob-lbl">VARIETY INDEX</span>
+                        <div class="blob-val" id="res-variety">--</div>
+                    </div>
+                    <div class="data-blob">
+                        <span class="blob-lbl">PROXIMITY BONUS</span>
+                        <div class="blob-val green" id="res-bonus">--</div>
+                    </div>
+                    <div class="data-blob full-grid feature-list">
+                        <span class="blob-lbl">SPATIAL ANOMALY DETECTION (INFRASTRUCTURE)</span>
+                        <div id="features-container" class="feature-pills"></div>
+                    </div>
+                </div>
+                <button id="close-results" class="close-btn">RESET TOPOLOGY</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crosshair hint -->
+    <div id="crosshair-hint" class="crosshair-hint">CLICK ANYWHERE IN INDIA TO LOCK TARGET</div>
+
+    <div class="watermark-clean">Proprietary Spatial Engine &copy; Harsh Choubey</div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script>
+        // Provide mock GEO_DATA instead of loading 8.8MB locations.js
+        const GEO_DATA = {
+            "Maharashtra": {
+                "Mumbai": [
+                    { "loc": "Bandra West (400050)", "lat": 19.0596, "lon": 72.8295 },
+                    { "loc": "Andheri East (400069)", "lat": 19.1136, "lon": 72.8697 },
+                    { "loc": "Colaba (400005)", "lat": 18.9067, "lon": 72.8147 }
+                ],
+                "Pune": [
+                    { "loc": "Koregaon Park (411001)", "lat": 18.5362, "lon": 73.8930 },
+                    { "loc": "Hinjewadi (411057)", "lat": 18.5913, "lon": 73.7389 }
+                ]
+            },
+            "Delhi": {
+                "South Delhi": [
+                    { "loc": "Hauz Khas (110016)", "lat": 28.5494, "lon": 77.2001 },
+                    { "loc": "Vasant Kunj (110070)", "lat": 28.5293, "lon": 77.1531 }
+                ],
+                "New Delhi": [
+                    { "loc": "Connaught Place (110001)", "lat": 28.6315, "lon": 77.2167 }
+                ]
+            },
+            "Karnataka": {
+                "Bengaluru": [
+                    { "loc": "Koramangala (560034)", "lat": 12.9352, "lon": 77.6245 },
+                    { "loc": "Indiranagar (560038)", "lat": 12.9784, "lon": 77.6408 },
+                    { "loc": "Whitefield (560066)", "lat": 12.9698, "lon": 77.7499 }
+                ]
+            }
+        };
+
+        // Mock ApiService to simulate backend algorithms natively
+        const ApiService = {
+            async evaluateLocation(lat, lon, radius) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const randomFactor = Math.random();
+                        resolve({
+                            location: {
+                                place_name: "Simulated Sector Node",
+                                nearest_pincode: Math.floor(100000 + Math.random() * 900000).toString()
+                            },
+                            metrics: {
+                                estimated_price_sqft: Math.floor(4000 + (randomFactor * 18000)),
+                                density_multiplier_pct: 5 + (randomFactor * 35),
+                                variety_score: (1 + randomFactor * 9).toFixed(1) + "/10",
+                                proximity_bonus_pct: randomFactor * 15
+                            },
+                            features: {
+                                "Transit Stations": { count: Math.floor(Math.random()*5), avg_dist_m: 100 + Math.random()*800 },
+                                "Commercial Hubs": { count: Math.floor(Math.random()*12), avg_dist_m: 50 + Math.random()*1200 },
+                                "Parks & Recreation": { count: Math.floor(Math.random()*4), avg_dist_m: 200 + Math.random()*900 },
+                                "Hospitals & Clinics": { count: Math.floor(Math.random()*6), avg_dist_m: 150 + Math.random()*700 },
+                                "Educational Nodes": { count: Math.floor(Math.random()*8), avg_dist_m: 300 + Math.random()*1000 }
+                            }
+                        });
+                    }, 1500); // 1.5s simulated process latency
+                });
+            }
+        };
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
